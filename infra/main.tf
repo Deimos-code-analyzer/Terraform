@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "ayush-terraform-state-bucket"   # existing or created bucket
+    bucket         = "ayush-terraform-state-bucket-fa287291"   # existing or created bucket
     key            = "github-runner/terraform.tfstate" # path inside the bucket
     region         = "us-east-1"
     dynamodb_table = "terraform-state-locks"          # table for state locking
