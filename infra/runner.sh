@@ -32,5 +32,5 @@ sudo -u ubuntu /home/ubuntu/actions-runner/config.sh --unattended \
   --work _work
 
 # Install and start service as ubuntu user
-sudo -u ubuntu /home/ubuntu/actions-runner/svc.sh install
-sudo -u ubuntu /home/ubuntu/actions-runner/svc.sh start
+sudo /home/ubuntu/actions-runner/svc.sh install
+sudo /home/ubuntu/actions-runner/svc.sh start
