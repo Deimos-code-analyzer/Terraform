@@ -1,16 +1,3 @@
-resource "aws_instance" "web" {
-    ami = "ami-04f59c565deeb2199"
-    instance_type = "t3.medium"
-    key_name = "ayushnv"
-
-    user_data = file("./runner.sh")
-
-    tags = {
-        Name = "AyushViaTerraform"
-    }
-}
-
-
 provider "aws" {
   region = var.aws_region
 }

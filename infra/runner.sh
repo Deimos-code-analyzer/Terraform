@@ -12,11 +12,13 @@ sudo apt-get install -y curl jq tar
 mkdir -p /home/ubuntu/actions-runner
 cd /home/ubuntu/actions-runner
 
-# Download latest runner package
-curl -o actions-runner-linux-x64.tar.gz -L \
-  https://github.com/actions/runner/releases/latest/download/actions-runner-linux-x64-2.322.0.tar.gz
+# Get latest release tag
+LATEST=$(curl -s https://api.github.com/repos/actions/runner/releases/latest | jq -r '.tag_name')
 
-# Extract it
+# Download and extract runner
+curl -o actions-runner-linux-x64.tar.gz -L \
+  "https://github.com/actions/runner/releases/download/${LATEST}/actions-runner-linux-x64-${LATEST:1}.tar.gz"
+
 tar xzf ./actions-runner-linux-x64.tar.gz
 
 # Configure the runner
