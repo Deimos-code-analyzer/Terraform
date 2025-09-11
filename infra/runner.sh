@@ -15,9 +15,9 @@ cd /home/ubuntu/actions-runner
 # Get latest release tag
 LATEST=$(curl -s https://api.github.com/repos/actions/runner/releases/latest | jq -r '.tag_name')
 
-# Download and extract runner
+# Download and extract runner (escaped for Terraform)
 curl -o actions-runner-linux-x64.tar.gz -L \
-  "https://github.com/actions/runner/releases/download/${LATEST}/actions-runner-linux-x64-${LATEST:1}.tar.gz"
+  "https://github.com/actions/runner/releases/download/$${LATEST}/actions-runner-linux-x64-$${LATEST:1}.tar.gz"
 
 tar xzf ./actions-runner-linux-x64.tar.gz
 
