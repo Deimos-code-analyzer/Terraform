@@ -1,0 +1,41 @@
+name: Deploy EC2 Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-runner:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Get GitHub Runner Token
+        id: runner-token
+        run: |
+          token=$(curl -s -X POST \
+            -H "Authorization: token ${{ secrets.GH_PAT }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/orgs/Deimos-code-analyzer/actions/runners/registration-token \
+            | jq -r .token)
+          echo "RUNNER_TOKEN=$token" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var "runner_token=${{ env.RUNNER_TOKEN }}"
